@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultimate Cat Clicker: Fish Edition 🐟</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to top, #d0f0ff, #ffffff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      margin-top: 1rem;
+      color: #005577;
+      text-shadow: 1px 1px 2px #aaa;
+    }
+
+    #cat {
+      font-size: 100px;
+      margin-top: -10px;
+    }
+
+    #fishingArea {
+      background: #e6faff;
+      border: 3px solid #00aaff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    #waves {
+      font-size: 24px;
+      animation: wave 3s infinite linear;
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-1rem); }
+    }
+
+    #fishBtn {
+      background: linear-gradient(to right, #ffb347, #ffcc33);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    #announcement {
+      font-size: 18px;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #004466;
+    }
+
+    #coinsDisplay {
+      font-size: 20px;
+      margin-top: 15px;
+      color: #0077aa;
+    }
+
+    .section {
+      background: #fff;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 0;
+    }
+
+    .shop-item button {
+      padding: 8px 20px;
+      margin: 5px 0;
+      background: #fff7b2;
+      border: 2px solid #ffe06e;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .shop-item button:hover {
+      background: #fff2a8;
+    }
+
+    #credits {
+      display: none;
+      background: #000;
+      color: #fff;
+      padding: 3rem;
+    }
+
+    #credits h2 {
+      font-size: 2rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐱 Ultimate Cat Clicker: Fish Edition</h1>
+  <div id="cat">😺</div>
+
+  <div id="fishingArea">
+    <div id="waves">🌊🌊🌊🎣🌊🌊🌊</div>
+    <button id="fishBtn">🎣 Cast Your Line</button>
+    <div id="announcement"></div>
+    <div id="coinsDisplay">Coins: <span id="coins">0</span></div>
+  </div>
+
+  <div class="section" id="shop">
+    <h2>Shop 🛍️</h2>
+    <div class="shop-item"><button onclick="buy('Better Rod', 100)">Better Rod - 100 coins</button></div>
+    <div class="shop-item"><button onclick="buy('Golden Hook', 500)">Golden Hook - 500 coins</button></div>
+    <div class="shop-item"><button onclick="buy('Fish Magnet', 1000)">Fish Magnet - 1000 coins</button></div>
+  </div>
+
+  <div class="section" id="upgrades">
+    <h2>Upgrades ⚙️</h2>
+    <div class="shop-item"><button onclick="buy('Auto-Fisher', 2000)">Auto-Fisher - 2000 coins</button></div>
+    <div class="shop-item"><button onclick="buy('Lucky Cat Charm', 5000)">Lucky Cat Charm - 5000 coins</button></div>
+  </div>
+
+  <div id="credits">
+    <h2>🐾 The Cat's Journey Ends 🐾</h2>
+    <p>After collecting over 1 million coins, your cat finally earns a peaceful life.</p>
+    <p>They move into a cozy cottage by the lake, free to fish forever in peace.</p>
+    <p>Thanks for playing.</p>
+    <p>— justdev-chris 🐱</p>
+  </div>
+
+  <footer>
+    Made with ❤️ for chill vibes and cat lovers.
+  </footer>
+
+  <script>
+    let coins = 0;
+    let multiplier = 1;
+    let autoFish = false;
+    let autoFishInterval = null;
+
+    const fishTypes = [
+      { name: "Common Fish 🐟", value: 10 },
+      { name: "Rare Fish 🐠", value: 50 },
+      { name: "Epic Fish 🐬", value: 200 },
+      { name: "Legendary Fish 🐉", value: 1000 }
+    ];
+
+    function fish() {
+      const fish = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+      const earnings = fish.value * multiplier;
+      coins += earnings;
+      document.getElementById("announcement").innerText =
+        `You caught a ${fish.name} and earned ${earnings} coins! 🎉`;
+      updateCoins();
+      checkEnding();
+    }
+
+    function buy(item, cost) {
+      if (coins >= cost) {
+        coins -= cost;
+        if (item === "Better Rod") multiplier += 1;
+        if (item === "Golden Hook") multiplier += 3;
+        if (item === "Fish Magnet") multiplier += 5;
+        if (item === "Lucky Cat Charm") multiplier += 10;
+        if (item === "Auto-Fisher" && !autoFish) {
+          autoFish = true;
+          autoFishInterval = setInterval(fish, 3000);
+        }
+        updateCoins();
+        document.getElementById("announcement").innerText = `You bought ${item}! 🎁`;
+      } else {
+        document.getElementById("announcement").innerText = "Not enough coins! ❌";
+      }
+    }
+
+    function updateCoins() {
+      document.getElementById("coins").innerText = coins;
+    }
+
+    function checkEnding() {
+      if (coins >= 1000000000000000000000000) {
+        document.body.innerHTML = '';
+        document.body.appendChild(document.getElementById("credits"));
+        document.getElementById("credits").style.display = 'block';
+      }
+    }
+
+    document.getElementById("fishBtn").addEventListener("click", fish);
+  </script>
+</body>
+</html>
