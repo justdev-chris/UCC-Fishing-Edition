@@ -25,7 +25,7 @@ and peace.
 3. **Buy upgrades** from the shop to increase your fishing power.
 4. **Reach the final upgrade** to unlock the story’s **true ending**.
 
-> Estimated playtime: ~10 minutes to complete.  
+> ts lil project is js about expanding the catverse 
 > Perfect for a short, quiet escape. 🐾
 
 ---
